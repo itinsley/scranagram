@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const createBtn = document.getElementById('create-btn');
     const lettersContainer = document.getElementById('letters-container');
 
+    // Check if there's a saved word in localStorage and load it
+    const savedWord = localStorage.getItem('savedWord');
+    if (savedWord) {
+        wordInput.value = savedWord;
+        createLetterBoxes();
+    }
+
     // Handle button click
     createBtn.addEventListener('click', createLetterBoxes);
     
@@ -20,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please enter a word');
             return;
         }
+
+        // Save the word to localStorage
+        localStorage.setItem('savedWord', word);
         
         // Clear previous letters
         lettersContainer.innerHTML = '';
