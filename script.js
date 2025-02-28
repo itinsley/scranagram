@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [...word].forEach((letter, index) => {
             const letterBox = document.createElement('div');
             letterBox.className = 'letter-box';
-            letterBox.textContent = letter;
+            letterBox.textContent = letter.toUpperCase();
             
             // Position randomly within the container
             const containerWidth = lettersContainer.offsetWidth - 60; // Subtract box width
