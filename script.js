@@ -24,8 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear previous letters
         lettersContainer.innerHTML = '';
         
-        // Create a box for each letter
+        // Create a box for each letter (excluding spaces)
         [...word].forEach((letter, index) => {
+            // Skip spaces
+            if (letter === ' ') return;
+            
             const letterBox = document.createElement('div');
             letterBox.className = 'letter-box';
             letterBox.textContent = letter.toUpperCase();
