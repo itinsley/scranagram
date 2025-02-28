@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
             lettersContainer.appendChild(letterBox);
         });
         
-        // Clear the input field
-        wordInput.value = '';
+        // Keep the word in the input field
+        // wordInput.value = '';
         
         // Make the letter boxes draggable
         setupDraggable();
