@@ -55,7 +55,7 @@ h1 {
 }
 
 .letters-container {
-    min-height: 300px;
+    min-height: 450px;
     position: relative;
     border: 1px dashed #ddd;
     border-radius: 4px;
