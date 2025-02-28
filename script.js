@@ -43,15 +43,23 @@ document.addEventListener('DOMContentLoaded', () => {
             letterBox.className = 'letter-box';
             letterBox.textContent = letter.toUpperCase();
             
-            // Position randomly within the container
-            const containerWidth = lettersContainer.offsetWidth - 60; // Subtract box width
-            const containerHeight = lettersContainer.offsetHeight - 60; // Subtract box height
+            // Position in a circular pattern like a clock face
+            const lettersCount = word.replace(/\s+/g, '').length; // Count letters excluding spaces
+            const radius = Math.min(lettersContainer.offsetWidth, lettersContainer.offsetHeight) * 0.35; // Use 35% of container size for radius
             
-            const randomX = Math.floor(Math.random() * containerWidth);
-            const randomY = Math.floor(Math.random() * 200); // Keep it in the upper area
+            // Calculate the center of the container
+            const centerX = lettersContainer.offsetWidth / 2 - 30; // Adjust for letter box width (60/2)
+            const centerY = lettersContainer.offsetHeight / 2 - 30; // Adjust for letter box height (60/2)
             
-            letterBox.style.left = `${randomX}px`;
-            letterBox.style.top = `${randomY}px`;
+            // Calculate position based on index (excluding spaces)
+            const nonSpaceIndex = [...word.substring(0, index)].filter(char => char !== ' ').length;
+            const angle = (nonSpaceIndex / lettersCount) * 2 * Math.PI - Math.PI/2; // Start from top (12 o'clock)
+            
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            letterBox.style.left = `${x}px`;
+            letterBox.style.top = `${y}px`;
             
             lettersContainer.appendChild(letterBox);
         });
