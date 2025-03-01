@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded and parsed');
+    
     const wordInput = document.getElementById('word-input');
     const lettersContainer = document.getElementById('letters-container');
     const circularBtn = document.getElementById('circular-btn');
