@@ -44,8 +44,9 @@ h1 {
 .button-section {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
-    gap: 10px;
+    gap: 15px;
 }
 
 #scramble-btn {
@@ -64,13 +65,40 @@ h1 {
     background-color: #45a049;
 }
 
-#layout-select {
-    padding: 10px;
+.layout-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.layout-btn {
+    width: 40px;
+    height: 40px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
     background-color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.layout-btn i {
+    font-size: 18px;
+    color: #666;
+}
+
+.layout-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.layout-btn.active {
+    background-color: #e6f7ff;
+    border-color: #1890ff;
+}
+
+.layout-btn.active i {
+    color: #1890ff;
 }
 
 .letters-container {

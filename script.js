@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wordInput = document.getElementById('word-input');
     const lettersContainer = document.getElementById('letters-container');
-    const layoutSelect = document.getElementById('layout-select');
+    const circularBtn = document.getElementById('circular-btn');
+    const linearBtn = document.getElementById('linear-btn');
+    
+    // Current layout (default: circular)
+    let currentLayout = 'circular';
     
     // Function to shuffle an array (Fisher-Yates algorithm)
     function shuffleArray(array) {
@@ -50,8 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrambleBtn = document.getElementById('scramble-btn');
     scrambleBtn.addEventListener('click', createLetterBoxes);
     
-    // Add event listener for layout selection
-    layoutSelect.addEventListener('change', createLetterBoxes);
+    // Add event listeners for layout buttons
+    circularBtn.addEventListener('click', () => {
+        currentLayout = 'circular';
+        circularBtn.classList.add('active');
+        linearBtn.classList.remove('active');
+        createLetterBoxes();
+    });
+    
+    linearBtn.addEventListener('click', () => {
+        currentLayout = 'linear';
+        linearBtn.classList.add('active');
+        circularBtn.classList.remove('active');
+        createLetterBoxes();
+    });
 
     function createLetterBoxes() {
         const word = wordInput.value.trim();
@@ -74,8 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const indices = Array.from({ length: letters.length }, (_, i) => i);
         shuffleArray(indices);
         
-        // Get the selected layout
-        const layout = layoutSelect.value;
+        // Use the current layout
+        const layout = currentLayout;
         
         // Get letter box size based on screen width and letter count
         const lettersCount = letters.length;
