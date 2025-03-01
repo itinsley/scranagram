@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wordInput = document.getElementById('word-input');
     const lettersContainer = document.getElementById('letters-container');
+    const layoutSelect = document.getElementById('layout-select');
     
     // Function to shuffle an array (Fisher-Yates algorithm)
     function shuffleArray(array) {
@@ -48,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listener for scramble button
     const scrambleBtn = document.getElementById('scramble-btn');
     scrambleBtn.addEventListener('click', createLetterBoxes);
+    
+    // Add event listener for layout selection
+    layoutSelect.addEventListener('change', createLetterBoxes);
 
     function createLetterBoxes() {
         const word = wordInput.value.trim();
@@ -70,17 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const indices = Array.from({ length: letters.length }, (_, i) => i);
         shuffleArray(indices);
         
-        // Position in a circular pattern like a clock face
-        const lettersCount = letters.length;
-        const radius = Math.min(lettersContainer.offsetWidth, lettersContainer.offsetHeight) * 0.35; // Use 35% of container size for radius
+        // Get the selected layout
+        const layout = layoutSelect.value;
         
         // Get letter box size based on screen width and letter count
+        const lettersCount = letters.length;
         const letterBoxSize = window.innerWidth < 600 ? 50 : 60;
         const halfLetterSize = letterBoxSize / 2;
         
-        // Calculate the center of the container
-        const centerX = lettersContainer.offsetWidth / 2 - halfLetterSize;
-        const centerY = lettersContainer.offsetHeight / 2 - halfLetterSize;
+        // Calculate container dimensions
+        const containerWidth = lettersContainer.offsetWidth;
+        const containerHeight = lettersContainer.offsetHeight;
         
         // Create a box for each letter with randomized position
         letters.forEach((letter, i) => {
@@ -92,10 +96,26 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Use the shuffled index for positioning
             const shuffledIndex = indices[i];
-            const angle = (shuffledIndex / lettersCount) * 2 * Math.PI - Math.PI/2; // Start from top (12 o'clock)
             
-            const x = centerX + radius * Math.cos(angle);
-            const y = centerY + radius * Math.sin(angle);
+            let x, y;
+            
+            if (layout === 'circular') {
+                // Circular layout (clock face)
+                const radius = Math.min(containerWidth, containerHeight) * 0.35; // Use 35% of container size for radius
+                const centerX = containerWidth / 2 - halfLetterSize;
+                const centerY = containerHeight / 2 - halfLetterSize;
+                
+                const angle = (shuffledIndex / lettersCount) * 2 * Math.PI - Math.PI/2; // Start from top (12 o'clock)
+                x = centerX + radius * Math.cos(angle);
+                y = centerY + radius * Math.sin(angle);
+            } else {
+                // Linear layout (horizontal line)
+                const totalWidth = lettersCount * (letterBoxSize * 1.2); // Add 20% spacing between letters
+                const startX = (containerWidth - totalWidth) / 2;
+                const y = containerHeight / 2 - halfLetterSize;
+                
+                x = startX + shuffledIndex * (letterBoxSize * 1.2);
+            }
             
             letterBox.style.left = `${x}px`;
             letterBox.style.top = `${y}px`;

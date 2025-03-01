@@ -45,6 +45,7 @@ h1 {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 #scramble-btn {
@@ -61,6 +62,15 @@ h1 {
 
 #scramble-btn:hover {
     background-color: #45a049;
+}
+
+#layout-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
 }
 
 .letters-container {
