@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (letter === ' ') return;
             
             const letterBox = document.createElement('div');
-            letterBox.className = 'letter-box';
+            letterBox.className = 'letter-box tile';
             letterBox.textContent = letter.toUpperCase();
             
             // Position in a circular pattern like a clock face
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupDraggable() {
-        interact('.letter-box').draggable({
+        interact('.tile').draggable({
             inertia: true,
             modifiers: [
                 interact.modifiers.restrictRect({
