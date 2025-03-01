@@ -2,6 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordInput = document.getElementById('word-input');
     const createBtn = document.getElementById('create-btn');
     const lettersContainer = document.getElementById('letters-container');
+    
+    // Debounce function to limit how often a function can be called
+    function debounce(func, delay) {
+        let debounceTimer;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
+    
+    // Debounced version of createLetterBoxes
+    const debouncedCreateLetterBoxes = debounce(createLetterBoxes, 500);
 
     // Check if there's a saved word in localStorage and load it
     const savedWord = localStorage.getItem('savedWord');
@@ -13,9 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle button click
     createBtn.addEventListener('click', createLetterBoxes);
     
+    // Handle input with debounce
+    wordInput.addEventListener('input', debouncedCreateLetterBoxes);
+    
     // Also handle Enter key press in the input field
     wordInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault(); // Prevent form submission if inside a form
             createLetterBoxes();
         }
     });
