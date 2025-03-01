@@ -109,12 +109,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 x = centerX + radius * Math.cos(angle);
                 y = centerY + radius * Math.sin(angle);
             } else {
-                // Linear layout (horizontal line)
-                const totalWidth = lettersCount * (letterBoxSize * 1.2); // Add 20% spacing between letters
-                const startX = (containerWidth - totalWidth) / 2;
-                const y = containerHeight / 2 - halfLetterSize;
+                // Linear layout with wrapping
+                const spacing = letterBoxSize * 1.2; // Add 20% spacing between letters
+                const tilesPerRow = Math.floor(containerWidth * 0.85 / spacing); // Use 85% of container width
+                const effectiveWidth = tilesPerRow * spacing;
+                const startX = (containerWidth - effectiveWidth) / 2;
                 
-                x = startX + shuffledIndex * (letterBoxSize * 1.2);
+                // Calculate row and column based on index
+                const row = Math.floor(shuffledIndex / tilesPerRow);
+                const col = shuffledIndex % tilesPerRow;
+                
+                // Calculate position with wrapping
+                x = startX + col * spacing;
+                y = containerHeight * 0.3 + row * spacing; // Start at 30% from top and add rows as needed
             }
             
             letterBox.style.left = `${x}px`;
