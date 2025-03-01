@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
     
+    // Debug info for GitHub Pages
+    console.log('Window location:', window.location.href);
+    console.log('Font Awesome loaded:', !!document.querySelector('link[href*="font-awesome"]'));
+    console.log('InteractJS loaded:', typeof interact !== 'undefined');
+    
     const wordInput = document.getElementById('word-input');
     const lettersContainer = document.getElementById('letters-container');
     const circularBtn = document.getElementById('circular-btn');
