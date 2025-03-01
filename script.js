@@ -47,9 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const lettersCount = word.replace(/\s+/g, '').length; // Count letters excluding spaces
             const radius = Math.min(lettersContainer.offsetWidth, lettersContainer.offsetHeight) * 0.35; // Use 35% of container size for radius
             
+            // Get letter box size based on screen width
+            const letterBoxSize = window.innerWidth < 600 ? 50 : 60;
+            const halfLetterSize = letterBoxSize / 2;
+            
             // Calculate the center of the container
-            const centerX = lettersContainer.offsetWidth / 2 - 30; // Adjust for letter box width (60/2)
-            const centerY = lettersContainer.offsetHeight / 2 - 30; // Adjust for letter box height (60/2)
+            const centerX = lettersContainer.offsetWidth / 2 - halfLetterSize;
+            const centerY = lettersContainer.offsetHeight / 2 - halfLetterSize;
             
             // Calculate position based on index (excluding spaces)
             const nonSpaceIndex = [...word.substring(0, index)].filter(char => char !== ' ').length;
