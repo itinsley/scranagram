@@ -2,6 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordInput = document.getElementById('word-input');
     const lettersContainer = document.getElementById('letters-container');
     
+    // Function to shuffle an array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    
     // Debounce function to limit how often a function can be called
     function debounce(func, delay) {
         let debounceTimer;
@@ -35,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
             createLetterBoxes();
         }
     });
+    
+    // Add event listener for scramble button
+    const scrambleBtn = document.getElementById('scramble-btn');
+    scrambleBtn.addEventListener('click', createLetterBoxes);
 
     function createLetterBoxes() {
         const word = wordInput.value.trim();
@@ -50,30 +63,36 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear previous letters
         lettersContainer.innerHTML = '';
         
-        // Create a box for each letter (excluding spaces)
-        [...word].forEach((letter, index) => {
-            // Skip spaces
-            if (letter === ' ') return;
-            
+        // Create an array of letters (excluding spaces)
+        const letters = [...word].filter(char => char !== ' ');
+        
+        // Create a shuffled array of indices
+        const indices = Array.from({ length: letters.length }, (_, i) => i);
+        shuffleArray(indices);
+        
+        // Position in a circular pattern like a clock face
+        const lettersCount = letters.length;
+        const radius = Math.min(lettersContainer.offsetWidth, lettersContainer.offsetHeight) * 0.35; // Use 35% of container size for radius
+        
+        // Get letter box size based on screen width and letter count
+        const letterBoxSize = window.innerWidth < 600 ? 50 : 60;
+        const halfLetterSize = letterBoxSize / 2;
+        
+        // Calculate the center of the container
+        const centerX = lettersContainer.offsetWidth / 2 - halfLetterSize;
+        const centerY = lettersContainer.offsetHeight / 2 - halfLetterSize;
+        
+        // Create a box for each letter with randomized position
+        letters.forEach((letter, i) => {
             const letterBox = document.createElement('div');
-            letterBox.className = 'letter-box tile';
+            
+            // Use smaller tiles if there are more than 15 letters
+            letterBox.className = lettersCount > 15 ? 'letter-box tile letter-box-small' : 'letter-box tile';
             letterBox.textContent = letter.toUpperCase();
             
-            // Position in a circular pattern like a clock face
-            const lettersCount = word.replace(/\s+/g, '').length; // Count letters excluding spaces
-            const radius = Math.min(lettersContainer.offsetWidth, lettersContainer.offsetHeight) * 0.35; // Use 35% of container size for radius
-            
-            // Get letter box size based on screen width
-            const letterBoxSize = window.innerWidth < 600 ? 50 : 60;
-            const halfLetterSize = letterBoxSize / 2;
-            
-            // Calculate the center of the container
-            const centerX = lettersContainer.offsetWidth / 2 - halfLetterSize;
-            const centerY = lettersContainer.offsetHeight / 2 - halfLetterSize;
-            
-            // Calculate position based on index (excluding spaces)
-            const nonSpaceIndex = [...word.substring(0, index)].filter(char => char !== ' ').length;
-            const angle = (nonSpaceIndex / lettersCount) * 2 * Math.PI - Math.PI/2; // Start from top (12 o'clock)
+            // Use the shuffled index for positioning
+            const shuffledIndex = indices[i];
+            const angle = (shuffledIndex / lettersCount) * 2 * Math.PI - Math.PI/2; // Start from top (12 o'clock)
             
             const x = centerX + radius * Math.cos(angle);
             const y = centerY + radius * Math.sin(angle);
