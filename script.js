@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wordInput = document.getElementById('word-input');
-    const createBtn = document.getElementById('create-btn');
     const lettersContainer = document.getElementById('letters-container');
     
     // Debounce function to limit how often a function can be called
@@ -15,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Debounced version of createLetterBoxes
-    const debouncedCreateLetterBoxes = debounce(createLetterBoxes, 500);
+    const debouncedCreateLetterBoxes = debounce(() => {
+        createLetterBoxes();
+    }, 500);
 
     // Check if there's a saved word in localStorage and load it
     const savedWord = localStorage.getItem('savedWord');
@@ -23,9 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         wordInput.value = savedWord;
         createLetterBoxes();
     }
-
-    // Handle button click
-    createBtn.addEventListener('click', createLetterBoxes);
     
     // Handle input with debounce
     wordInput.addEventListener('input', debouncedCreateLetterBoxes);
@@ -42,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const word = wordInput.value.trim();
         
         if (!word) {
-            alert('Please enter a word');
+            // Don't show alert when debouncing, just return silently
             return;
         }
 
